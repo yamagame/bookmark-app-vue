@@ -28,25 +28,6 @@ const backgroundColors = [
   "#D4C4FB",
 ];
 
-function hexToRgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
-    : null;
-}
-
-const rgba = (hex, alpha) => {
-  const rgb = hexToRgb(hex);
-  if (rgb) {
-    return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
-  }
-  return hex;
-};
-
 const defaultColor = backgroundColors[13];
 const fontColors =
   backgroundColors.map((color, i) => {
@@ -59,15 +40,6 @@ const colorFilterState = ref(false);
 const bookmarks = ref([]);
 const selectedUrl = ref("");
 const fontColorIndex = ref(0);
-
-function stopPropagation(e) {
-  e.stopPropagation();
-}
-
-function changeColor(e) {
-  // e.stopPropagation();
-  // toggleColorPicker();
-}
 
 function clearButton() {
   console.log("clear");
