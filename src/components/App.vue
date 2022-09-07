@@ -50,7 +50,7 @@ const rgba = (hex, alpha) => {
 const defaultColor = backgroundColors[13];
 const fontColors =
   backgroundColors.map((color, i) => {
-    return i >= backgroundColors.length / 2 || color === defaultColor ? "#555" : "white";
+    return i >= backgroundColors.length / 2 || color === defaultColor || color === "#FCCB00" ? "#555" : "white";
   })
 
 const bookmarkName = ref("");
@@ -105,6 +105,26 @@ function clickBookmark(bookmark) {
   window.open(bookmark.url, "_blank");
 }
 
+const updateColor = (color) => {
+  const value = [...bookmarks.value.map((v) => {
+    if (v.url === selectedUrl.value) {
+      return { ...v, color };
+    }
+    return v;
+  })];
+  bookmarks.value = value;
+  saveBookmark();
+}
+
+function nextColor(delta) {
+  let value = fontColorIndex.value;
+  value += delta;
+  if (value >= fontColors.length) value = 0;
+  if (value < 0) value = fontColors.length - 1;
+  fontColorIndex.value = value;
+  updateColor(value);
+}
+
 onMounted(() => {
   const data = localStorage.getItem("vue-bookmarks");
   if (typeof data === "string") {
@@ -121,29 +141,11 @@ onMounted(() => {
       bookmarks.value = value;
       saveBookmark();
     }
-    const updateColor = (color) => {
-      const value = [...bookmarks.value.map((v) => {
-        if (v.url === selectedUrl.value) {
-          return { ...v, color };
-        }
-        return v;
-      })];
-      bookmarks.value = value;
-      saveBookmark();
-    }
     if (e.key === "ArrowRight") {
-      let value = fontColorIndex.value;
-      value++;
-      if (value >= fontColors.length) value = 0;
-      fontColorIndex.value = value;
-      updateColor(value);
+      nextColor(1);
     }
     if (e.key === "ArrowLeft") {
-      let value = fontColorIndex.value;
-      value--;
-      if (value < 0) value = fontColors.length - 1;
-      fontColorIndex.value = value;
-      updateColor(value);
+      nextColor(-1);
     }
     console.log(e.key);
   };
@@ -155,7 +157,8 @@ onMounted(() => {
 <template>
   <div class="mark-top-header" @click.stop>
     <div class="mark-container" @click.stop>
-      <div class="mark-color" :style="{ 'background-color': backgroundColors[fontColorIndex] }"></div>
+      <div class="mark-color" :style="{ 'background-color': backgroundColors[fontColorIndex] }"
+        @click="() => nextColor(1)"></div>
       <div class="mark-item">
         <input id="filterCheckbox" type="checkbox" v-model="colorFilterState" />
       </div>
