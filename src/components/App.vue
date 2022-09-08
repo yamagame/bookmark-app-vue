@@ -39,7 +39,7 @@ const bookmarkUrl = ref("");
 const colorFilterState = ref(false);
 const bookmarks = ref([]);
 const selectedUrl = ref("");
-const fontColorIndex = ref(0);
+const fontColorIndex = ref(13);
 
 function clearButton() {
   bookmarkName.value = "";
@@ -152,7 +152,7 @@ onMounted(() => {
   </div>
   <div class="mark-body-container">
     <div class="mark-card" v-for="bookmark of bookmarks.filter((v) => v.color === fontColorIndex || !colorFilterState)"
-      :style="{ 'border': (selectedUrl === bookmark.url ? `solid 2px blue` : `solid 2px lightgray` ), 'background-color': backgroundColors[bookmark.color] }"
+      :style="{ 'border': (selectedUrl === bookmark.url ? `solid 2px blue` : `solid 2px white` ), 'background-color': backgroundColors[bookmark.color] }"
       @click.stop="(e) => selectBookmark(bookmark)">
       <a :href="bookmark.url" rel="noopener noreferrer" target="_blank" :style="{ color: fontColors[bookmark.color] }"
         @click.prevent.stop="(e) => clickBookmark(bookmark)">
