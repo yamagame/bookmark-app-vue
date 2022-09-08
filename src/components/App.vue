@@ -42,9 +42,7 @@ const selectedUrl = ref("");
 const fontColorIndex = ref(0);
 
 function clearButton() {
-  console.log("clear");
   bookmarkName.value = "";
-  bookmarkUrl.value = "";
 }
 
 function saveBookmark() {
