@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 defineProps({
   bookmarkName: String,
@@ -40,6 +40,7 @@ const colorFilterState = ref(false);
 const bookmarks = ref([]);
 const selectedUrl = ref("");
 const fontColorIndex = ref(13);
+const filteredBookmarks = computed(() => bookmarks.value.filter((v) => v.color === fontColorIndex.value || !colorFilterState.value));
 
 function clearButton() {
   bookmarkName.value = "";
@@ -151,7 +152,7 @@ onMounted(() => {
     </div>
   </div>
   <div class="mark-body-container">
-    <div class="mark-card" v-for="bookmark of bookmarks.filter((v) => v.color === fontColorIndex || !colorFilterState)"
+    <div class="mark-card" v-for="bookmark of filteredBookmarks"
       :style="{ 'border': (selectedUrl === bookmark.url ? `solid 2px blue` : `solid 2px white` ), 'background-color': backgroundColors[bookmark.color] }"
       @click.stop="(e) => selectBookmark(bookmark)">
       <a :href="bookmark.url" rel="noopener noreferrer" target="_blank" :style="{ color: fontColors[bookmark.color] }"
